@@ -159,10 +159,10 @@ if __name__ == '__main__':
     
     fDup = open(outPrefix + '.check.dup', 'wt')
     fRef = open(outPrefix + '.check.ref', 'wt')
-    fNonSnp = open(outPrefix + '.check.nonSnp', 'wt')
-    fMono = open(outPrefix + '.check.mono', 'wt')
+    # fNonSnp = open(outPrefix + '.check.nonSnp', 'wt')
+    # fMono = open(outPrefix + '.check.mono', 'wt')
     fGeno = open(outPrefix + '.check.geno', 'wt')
-    fAF = open(outPrefix + '.check.af', 'wt')
+    # fAF = open(outPrefix + '.check.af', 'wt')
 
     nRef, nGeno, nAF = 0, 0, 0
     nNonSnp = 0
@@ -217,14 +217,14 @@ if __name__ == '__main__':
                 sys.exit(1)
 
             chrom, pos, rsId, ref, alt, qual, filt, info, format = fd[:9]
-            if len(ref) != 1 or len(alt) != 1:
-                fNonSnp.write("%s\n" % ('\t'.join(fd[:5])))
-                nNonSnp += 1
-                continue
-            if ref not in ACGT or alt not in ACGTM:
-                fNonSnp.write("%s\n" % ('\t'.join(fd[:5])))
-                nNonSnp += 1        
-                continue
+            # if len(ref) != 1 or len(alt) != 1:
+            #     fNonSnp.write("%s\n" % ('\t'.join(fd[:5])))
+            #     nNonSnp += 1
+            #     continue
+            # if ref not in ACGT or alt not in ACGTM:
+            #     fNonSnp.write("%s\n" % ('\t'.join(fd[:5])))
+            #     nNonSnp += 1
+            #     continue
 
             site = '%s:%s' % (chrom, pos)
             if site in snpSite:
@@ -276,21 +276,21 @@ if __name__ == '__main__':
                 continue
             
             # check AF
-            geno = [getGeno(g) for g in genos]
-            ac = sum( (g for g in geno if g > 0) )
-            nSample = sum( (1 for g in geno if g >= 0 ) )
-            if ac == 0 or ac == 2*nSample:
-                # monomorphic site
-                fMono.write('%s:%s\t%d\t%d\n' % (chrom, pos, ac, nSample))
-                nMono += 1
-
-            if nSample > 0:
-                af = 1.0 * ac / nSample / 2
-            else:
-                af = 0.0
-            if af > 0.5:
-                fAF.write('%s:%s\t%s\t%s\t%f\n' % (chrom, pos, ref, alt, af))
-                nAF += 1
+            # geno = [getGeno(g) for g in genos]
+            # ac = sum( (g for g in geno if g > 0) )
+            # nSample = sum( (1 for g in geno if g >= 0 ) )
+            # if ac == 0 or ac == 2*nSample:
+            #     # monomorphic site
+            #     fMono.write('%s:%s\t%d\t%d\n' % (chrom, pos, ac, nSample))
+            #     nMono += 1
+            #
+            # if nSample > 0:
+            #     af = 1.0 * ac / nSample / 2
+            # else:
+            #     af = 0.0
+            # if af > 0.5:
+            #     fAF.write('%s:%s\t%s\t%s\t%f\n' % (chrom, pos, ref, alt, af))
+            #     nAF += 1
     except SystemExit:
         sys.exit(1)
     except KeyboardInterrupt:
@@ -327,10 +327,10 @@ if __name__ == '__main__':
 
     fDup.close()
     fRef.close()
-    fNonSnp.close()
+    # fNonSnp.close()
     fMono.close()
     fGeno.close()
-    fAF.close()
+    # fAF.close()
 
     actionItem(logger)
     if nDupSite > 0 or nRef > 0 or nGeno > 0:
